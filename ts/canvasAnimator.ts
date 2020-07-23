@@ -12,6 +12,7 @@ export class CanvasAnimator
 	private animators: CanvasAnimator_Animator[] = [];
 	private pastTime = 0;
 	private startTime = 0;
+	private backgroundColor = "white";
 	public createLineAnimation = {
 		draw: this.createLineAnimationDraw,
 		grow: this.createLineAnimationGrow,
@@ -45,7 +46,7 @@ export class CanvasAnimator
 		const interFrame = time - this.pastTime;
 		this.pastTime = time;
 		this.ctx.save();
-		this.ctx.fillStyle = "white";
+		this.ctx.fillStyle = this.backgroundColor;
 		this.ctx.fillRect(this.x, this.y, this.width, this.height);
 		this.ctx.restore();
 		for (let i = this.animators.length - 1; i >= 0; i--) {
@@ -70,6 +71,11 @@ export class CanvasAnimator
 		if (animation == undefined) animation = [];
 		if (styles == undefined) styles = () => {};
 		this.animators.push(new CanvasAnimator_CircleAnimator(sx, sy, ex, styles, animation));
+	}
+
+	public setBackgroundColor(color: string)
+	{
+		this.backgroundColor = color;
 	}
 
 	private createLineAnimationDraw(startTime: number, duraction?: number)
