@@ -12,6 +12,8 @@ export function setListeners()
 	setButtonOnClick("example7", ex7);
 	setButtonOnClick("example8", ex8);
 	setButtonOnClick("example9", ex9);
+	setButtonOnClick("example10", ex10);
+	setButtonOnClick("example11", ex11);
 }
 
 function ex9()
@@ -62,6 +64,33 @@ function ex0()
 		canvasAnimator.createCircleAnimation.moveTo(0, 300, 100, 150, 20),
 		canvasAnimator.createCircleAnimation.draw(0, 500),
 		canvasAnimator.createCircleAnimation.fold(0, 1500, -90),
+	]);
+}
+
+function ex10()
+{
+	canvasAnimator.drawCircle(100, 150, 50, true, false, [
+		canvasAnimator.createCircleAnimation.grow(0, 500, -180, true),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 100, 150, 30),
+		canvasAnimator.createCircleAnimation.moveTo(0, 400, 100, 150, 60),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 100, 150, 20),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 100, 150, 30),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 100, 150, 10),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 100, 150, 15),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 100, 150, 0),
+	]);
+}
+function ex11()
+{
+	canvasAnimator.drawCircle(100, 150, 0, true, false, [
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 100, 150, 40),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 170, 400, 40),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 300, 300, 40),
+		canvasAnimator.createCircleAnimation.moveTo(0, 90, 340, 280, 40),
+		canvasAnimator.createCircleAnimation.moveTo(0, 300, 460, 400, 40),
+		canvasAnimator.createCircleAnimation.moveTo(0, 250, 460 + 100, 400 + 120, 40),
+		canvasAnimator.createCircleAnimation.moveTo(0, 200, 460 + 180, 400 + 240, 0),
+		canvasAnimator.createCircleAnimation.fold(0, 1500, 180),
 	]);
 }
 
