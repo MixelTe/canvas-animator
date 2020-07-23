@@ -213,8 +213,8 @@ class CanvasAnimator_LineAnimation_Fold extends CanvasAnimator_LineAnimation
 			this.cx -= this.stepX * time;
 			this.cy -= this.stepY * time;
 
-			this.cx = this.normalizeCoordinates(this.sx, this.cx, this.ex);
-			this.cy = this.normalizeCoordinates(this.sy, this.cy, this.ey);
+			this.cx = this.normalizeCoordinates(this.ex, this.cx, this.sx);
+			this.cy = this.normalizeCoordinates(this.ey, this.cy, this.sy);
 			if (this.cx == this.sx && this.cy == this.sy) this.complited = true;
 		}
 		return { complited: this.complited };
