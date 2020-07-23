@@ -32,14 +32,18 @@ canvasAnimator.drawText(x: number, y: number, text: string);
 ## Add animation
 ``` ts
 const lineAnimation  = canvasAnimator.createLineAnimation.[animation]
-canvasAnimator.drawLine(startX: number, startY: number, endX: number, enxY: number, animations: lineAnimation[]);
+canvasAnimator.drawLine(startX: number, startY: number, endX: number, enxY: number, countTimeFromNow: boolean, animations: lineAnimation[]);
 
 const circleAnimation  = canvasAnimator.createCircleAnimation.[animation]
-canvasAnimator.drawCircle(x: number, y: number, radius: number, fill: boolean, animations: circleAnimation[]);
+canvasAnimator.drawCircle(x: number, y: number, radius: number, fill: boolean, countTimeFromNow: boolean, animations: circleAnimation[]);
 
 const textAnimation  = canvasAnimator.createTextAnimation.[animation]
-canvasAnimator.drawText(x: number, y: number, text: string, animations: textAnimation[]);
+canvasAnimator.drawText(x: number, y: number, text: string, countTimeFromNow: boolean, animations: textAnimation[]);
 ```
+if countTimeFromNow is true zero time for animations will be when you call draw function
+
+if countTimeFromNow is false zero time for animations will be when you create canvasAnimator
+
 
 ## Animations
 ### Grow animation

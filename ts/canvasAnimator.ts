@@ -79,29 +79,33 @@ export class CanvasAnimator
 		requestAnimationFrame(this.redrawAll.bind(this));
 	}
 
-	public drawLine(sx: number, sy: number, ex: number, ey: number, animation?: CanvasAnimator_LineAnimationData[], styles?: SetStyleFunction)
+	public drawLine(sx: number, sy: number, ex: number, ey: number, countTimeFromNow?: boolean, animation?: CanvasAnimator_LineAnimationData[], styles?: SetStyleFunction)
 	{
 		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_LineAnimationData_Draw(0)];
 		if (styles == undefined) styles = () => {};
-		this.animators.push(new CanvasAnimator_LineAnimator(sx, sy, ex, ey, styles, animation));
+		countTimeFromNow = countTimeFromNow || false;
+		this.animators.push(new CanvasAnimator_LineAnimator(this.pastTime, countTimeFromNow, sx, sy, ex, ey, styles, animation));
 	}
-	public drawCircle(x: number, y: number, r: number, fill: boolean, animation?: CanvasAnimator_CircleAnimationData[], styles?: SetStyleFunction)
+	public drawCircle(x: number, y: number, r: number, fill: boolean, countTimeFromNow?: boolean, animation?: CanvasAnimator_CircleAnimationData[], styles?: SetStyleFunction)
 	{
 		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_CircleAnimationData_Draw(0)];
-		if (styles == undefined) styles = () => {};
-		this.animators.push(new CanvasAnimator_CircleAnimator(x, y, r, fill, styles, animation));
+		if (styles == undefined) styles = () => { };
+		countTimeFromNow = countTimeFromNow || false;
+		this.animators.push(new CanvasAnimator_CircleAnimator(this.pastTime, countTimeFromNow, x, y, r, fill, styles, animation));
 	}
-	public drawText(x: number, y: number, text: string, animation?: CanvasAnimator_TextAnimationData[], styles?: SetStyleFunction)
+	public drawText(x: number, y: number, text: string, countTimeFromNow?: boolean, animation?: CanvasAnimator_TextAnimationData[], styles?: SetStyleFunction)
 	{
 		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_TextAnimationData_Draw(0)];
 		if (styles == undefined) styles = () => {};
-		this.animators.push(new CanvasAnimator_TextAnimator(x, y, text, styles, animation));
+		countTimeFromNow = countTimeFromNow || false;
+		this.animators.push(new CanvasAnimator_TextAnimator(this.pastTime, countTimeFromNow, x, y, text, styles, animation));
 	}
-	public drawRect(x: number, y: number, width: number, height: number, animation?: CanvasAnimator_RectAnimationData[], styles?: SetStyleFunction)
+	public drawRect(x: number, y: number, width: number, height: number, countTimeFromNow?: boolean, animation?: CanvasAnimator_RectAnimationData[], styles?: SetStyleFunction)
 	{
 		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_RectAnimationData_Draw(0)];
 		if (styles == undefined) styles = () => {};
-		this.animators.push(new CanvasAnimator_RectAnimator(x, y, width, height, styles, animation));
+		countTimeFromNow = countTimeFromNow || false;
+		this.animators.push(new CanvasAnimator_RectAnimator(this.pastTime, countTimeFromNow, x, y, width, height, styles, animation));
 	}
 
 	public setBackgroundColor(color: string)

@@ -27,19 +27,19 @@ setButtonOnClick("example9", ex9);
 
 function ex9()
 {
-	canvasAnimator.drawRect(50, 100, 200, 150, [
+	canvasAnimator.drawRect(50, 100, 200, 150, true, [
 		canvasAnimator.createRectAnimation.growXY(0, 1000, true, true),
 		canvasAnimator.createRectAnimation.foldX(0, 1000, true),
 	]);
-	canvasAnimator.drawRect(300, 100, 200, 150, [
+	canvasAnimator.drawRect(300, 100, 200, 150, true, [
 		canvasAnimator.createRectAnimation.growY(500, 1000, false),
 		canvasAnimator.createRectAnimation.foldXY(500, 1000, true, false),
 	]);
-	canvasAnimator.drawRect(50, 300, 200, 150, [
+	canvasAnimator.drawRect(50, 300, 200, 150, true, [
 		canvasAnimator.createRectAnimation.growX(1000, 1000, false),
 		canvasAnimator.createRectAnimation.foldY(1000, 1000, true),
 	]);
-	canvasAnimator.drawRect(300, 300, 200, 150, [
+	canvasAnimator.drawRect(300, 300, 200, 150, true, [
 		canvasAnimator.createRectAnimation.growXY(1500, 1000, false, false),
 		canvasAnimator.createRectAnimation.foldXY(1500, 1000, false, false),
 	]);
@@ -48,7 +48,7 @@ function ex9()
 
 function ex8()
 {
-	canvasAnimator.drawRect(50, 100, 200, 150, [
+	canvasAnimator.drawRect(50, 100, 200, 150, false, [
 		canvasAnimator.createRectAnimation.growFullControls(0, 1000, true, false, true, true, true, false),
 		canvasAnimator.createRectAnimation.growFullControls(0, 1000, true, true, false, true, true, true),
 		canvasAnimator.createRectAnimation.growFullControls(0, 1000, true, true, true, true, false, false),
@@ -59,7 +59,7 @@ function ex8()
 
 function ex1()
 {
-	canvasAnimator.drawCircle(100, 100, 50, true, [
+	canvasAnimator.drawCircle(100, 100, 50, false, false, [
 		canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
 		canvasAnimator.createCircleAnimation.draw(0, 500),
 		canvasAnimator.createCircleAnimation.moveTo(0, 500, 100, 100, 70),
@@ -71,7 +71,7 @@ function ex1()
 function ex2()
 {
 
-	canvasAnimator.drawText(100, 100, "Hellow world", [
+	canvasAnimator.drawText(100, 100, "Hellow world", false, [
 		canvasAnimator.createTextAnimation.grow(0, 1000),
 		canvasAnimator.createTextAnimation.draw(0, 500),
 		canvasAnimator.createTextAnimation.moveTo(0, 1000, 300, 200),
@@ -88,7 +88,7 @@ function setStyle_text(ctx: CanvasRenderingContext2D)
 function ex3()
 {
 
-	canvasAnimator.drawCircle(100, 100, 50, false, [
+	canvasAnimator.drawCircle(100, 100, 50, false, false, [
 		canvasAnimator.createCircleAnimation.dash(0, -8, [15, 10], 2000),
 		canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
 		canvasAnimator.createCircleAnimation.draw(0, 500),
@@ -101,13 +101,13 @@ function ex3()
 
 function ex4()
 {
-	canvasAnimator.drawLine(0, 0, 500, 500, [
+	canvasAnimator.drawLine(0, 0, 500, 500, false, [
 		canvasAnimator.createLineAnimation.grow(0, 500),
 		canvasAnimator.createLineAnimation.moveTo(0, 1000, 200, 200, 700, 400),
 		canvasAnimator.createLineAnimation.draw(0, 500),
 		canvasAnimator.createLineAnimation.fold(0, 500),
 	], setStyle);
-	canvasAnimator.drawLine(50, 100, 300, 300, [
+	canvasAnimator.drawLine(50, 100, 300, 300, false, [
 		canvasAnimator.createLineAnimation.dash(500, 20, [20, 40]),
 		canvasAnimator.createLineAnimation.grow(0, 500),
 		canvasAnimator.createLineAnimation.moveTo(0, 1000, 300, 50, 100, 300),
@@ -149,7 +149,7 @@ function ex5()
 {
 	for (let i = 0; i < 200; i++)
 	{
-		canvasAnimator.drawLine(rndInt(canvas.width), rndInt(canvas.height), rndInt(canvas.width), rndInt(canvas.height), [
+		canvasAnimator.drawLine(rndInt(canvas.width), rndInt(canvas.height), rndInt(canvas.width), rndInt(canvas.height), true, [
 			canvasAnimator.createLineAnimation.grow(0, rndInt(800) + 200),
 			canvasAnimator.createLineAnimation.draw(0, rndInt(800) + 200),
 			canvasAnimator.createLineAnimation.fold(0, rndInt(800) + 200),
@@ -160,7 +160,7 @@ function ex5()
 function ex6()
 {
 	for (let i = 0; i < 100; i++) {
-		canvasAnimator.drawCircle(rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10, false, [
+		canvasAnimator.drawCircle(rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10, false, true, [
 			canvasAnimator.createCircleAnimation.grow(0, rndInt(800) + 200, -90, true),
 			canvasAnimator.createCircleAnimation.draw(0, rndInt(800) + 200),
 			canvasAnimator.createCircleAnimation.fold(0, rndInt(800) + 200, -90),
@@ -171,7 +171,7 @@ function ex6()
 function ex7()
 {
 	for (let i = 0; i < 100; i++) {
-		canvasAnimator.drawCircle(rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10, false, [
+		canvasAnimator.drawCircle(rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10, false, true, [
 			canvasAnimator.createCircleAnimation.grow(0, rndInt(800) + 200, -90, true),
 			canvasAnimator.createCircleAnimation.moveTo(0, rndInt(1600) + 400, rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10),
 			canvasAnimator.createCircleAnimation.fold(0, rndInt(800) + 200, -90),

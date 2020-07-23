@@ -12,9 +12,9 @@ export class CanvasAnimator_CircleAnimator extends CanvasAnimator_Animator
 	private curAnimation: CanvasAnimator_CircleAnimation | undefined;
 	private dashAnimations: CanvasAnimator_CircleAnimationData_Dash[] = [];
 	private dashAnimation: CanvasAnimator_CircleAnimation_Dash | undefined;
-	constructor(x: number, y: number, r: number, fill: boolean, setStyle: SetStyleFunction, animations: CanvasAnimator_CircleAnimationData[])
+	constructor(startTime: number, calcTimeFrElCr: boolean, x: number, y: number, r: number, fill: boolean, setStyle: SetStyleFunction, animations: CanvasAnimator_CircleAnimationData[])
 	{
-		super();
+		super(startTime, calcTimeFrElCr);
 		this.animations = animations;
 		this.setStyle = setStyle;
 		this.x = x;
@@ -42,13 +42,16 @@ export class CanvasAnimator_CircleAnimator extends CanvasAnimator_Animator
 			for (let i = 0; i < this.dashAnimations.length; i++)
 			{
 				const el = this.dashAnimations[i];
-				if (el.startTime <= time - startTime)
+				let elTime = el.startTime;
+				if (this.calculateTimeFromElementCreating) elTime += this.startTime;
+				if (elTime <= time - startTime)
 				{
 					const animation = el.createAnimation(this.x, this.y, this.r, this.fill);
 					this.dashAnimation = animation;
 					this.dashAnimation.redraw(ctx, interFrame);
 					this.dashAnimations.splice(i, 1);
-					logStart(this.dashAnimation.name, el.startTime, time, startTime);
+					if (this.calculateTimeFromElementCreating) logStart(this.dashAnimation.name, el.startTime, time, startTime, elTime);
+					else logStart(this.dashAnimation.name, elTime, time, startTime);
 					break;
 				};
 			}
@@ -67,13 +70,16 @@ export class CanvasAnimator_CircleAnimator extends CanvasAnimator_Animator
 		{
 			for (let i = 0; i < this.animations.length; i++) {
 				const el = this.animations[i];
-				if (el.startTime <= time - startTime)
+				let elTime = el.startTime;
+				if (this.calculateTimeFromElementCreating) elTime += this.startTime;
+				if (elTime <= time - startTime)
 				{
 					const animation = el.createAnimation(this.x, this.y, this.r, this.fill);
 					this.curAnimation = animation;
 					this.animations.splice(i, 1);
 					this.curAnimation.redraw(ctx, interFrame);
-					logStart(this.curAnimation.name, el.startTime, time, startTime);
+					if (this.calculateTimeFromElementCreating) logStart(this.curAnimation.name, el.startTime, time, startTime, elTime);
+					else logStart(this.curAnimation.name, elTime, time, startTime);
 					break;
 				};
 			}

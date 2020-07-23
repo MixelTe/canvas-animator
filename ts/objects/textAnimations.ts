@@ -9,9 +9,9 @@ export class CanvasAnimator_TextAnimator extends CanvasAnimator_Animator
 	private setStyle: SetStyleFunction;
 	private animations: CanvasAnimator_TextAnimationData[];
 	private curAnimation: CanvasAnimator_TextAnimation | undefined;
-	constructor(x: number, y: number, text: string, setStyle: SetStyleFunction, animations: CanvasAnimator_TextAnimationData[])
+	constructor(startTime: number, calcTimeFrElCr: boolean, x: number, y: number, text: string, setStyle: SetStyleFunction, animations: CanvasAnimator_TextAnimationData[])
 	{
-		super();
+		super(startTime, calcTimeFrElCr);
 		this.animations = animations;
 		this.setStyle = setStyle;
 		this.x = x;
@@ -27,13 +27,16 @@ export class CanvasAnimator_TextAnimator extends CanvasAnimator_Animator
 		{
 			for (let i = 0; i < this.animations.length; i++) {
 				const el = this.animations[i];
-				if (el.startTime <= time - startTime)
+				let elTime = el.startTime;
+				if (this.calculateTimeFromElementCreating) elTime += this.startTime;
+				if (elTime <= time - startTime)
 				{
 					const animation = el.createAnimation(this.x, this.y, this.text);
 					this.curAnimation = animation;
 					this.animations.splice(i, 1);
 					this.curAnimation.redraw(ctx, interFrame);
-					logStart(this.curAnimation.name, el.startTime, time, startTime);
+					if (this.calculateTimeFromElementCreating) logStart(this.curAnimation.name, el.startTime, time, startTime, elTime);
+					else logStart(this.curAnimation.name, elTime, time, startTime);
 					break;
 				};
 			}
