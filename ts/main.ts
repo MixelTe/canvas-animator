@@ -2,7 +2,7 @@ import { CanvasAnimator } from "./canvasAnimator.js";
 
 const canvas = getCanvas("canvas");
 const w = window.innerWidth - 17;
-const h = window.innerHeight - 20;
+const h = window.innerHeight - 42;
 
 canvas.style.width = `${w}`;
 canvas.style.height = `${h}`;
@@ -15,50 +15,73 @@ const canvasAnimator = new CanvasAnimator(ctx, canvas.width, canvas.height);
 
 canvasAnimator.setBackgroundColor("lightgreen");
 
-// canvasAnimator.drawCircle(100, 100, 50, true, [
-// 	canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
-// 	canvasAnimator.createCircleAnimation.draw(0, 500),
-// 	canvasAnimator.createCircleAnimation.moveTo(0, 500, 100, 100, 70),
-// 	canvasAnimator.createCircleAnimation.draw(0, 500),
-// 	canvasAnimator.createCircleAnimation.fold(0, 2000, -90),
-// ]);
+setButtonOnClick("example1", ex1);
+setButtonOnClick("example2", ex2);
+setButtonOnClick("example3", ex3);
+setButtonOnClick("example4", ex4);
+setButtonOnClick("example5", ex5);
+setButtonOnClick("example6", ex6);
+setButtonOnClick("example7", ex7);
 
-// canvasAnimator.drawText(100, 100, "Hellow world", [
-// 	canvasAnimator.createTextAnimation.grow(0, 1000),
-// 	canvasAnimator.createTextAnimation.draw(0, 500),
-// 	canvasAnimator.createTextAnimation.moveTo(0, 1000, 300, 200),
-// 	canvasAnimator.createTextAnimation.draw(0, 500),
-// 	canvasAnimator.createTextAnimation.fold(0, 1000),
-// ], setStyle_text);
+
+function ex1()
+{
+	canvasAnimator.drawCircle(100, 100, 50, true, [
+		canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
+		canvasAnimator.createCircleAnimation.draw(0, 500),
+		canvasAnimator.createCircleAnimation.moveTo(0, 500, 100, 100, 70),
+		canvasAnimator.createCircleAnimation.draw(0, 500),
+		canvasAnimator.createCircleAnimation.fold(0, 2000, -90),
+	]);
+}
+
+function ex2()
+{
+
+	canvasAnimator.drawText(100, 100, "Hellow world", [
+		canvasAnimator.createTextAnimation.grow(0, 1000),
+		canvasAnimator.createTextAnimation.draw(0, 500),
+		canvasAnimator.createTextAnimation.moveTo(0, 1000, 300, 200),
+		canvasAnimator.createTextAnimation.draw(0, 500),
+		canvasAnimator.createTextAnimation.fold(0, 1000),
+	], setStyle_text);
+}
 
 function setStyle_text(ctx: CanvasRenderingContext2D)
 {
 	ctx.font = "30px Arial";
 }
 
-// canvasAnimator.drawCircle(100, 100, 50, [
-// 	canvasAnimator.createCircleAnimation.dash(0, 10, [15, 10], 2000),
-// 	canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
-// 	canvasAnimator.createCircleAnimation.draw(0, 500),
-// 	canvasAnimator.createCircleAnimation.moveTo(0, 1000, 130, 150, 70),
-// 	canvasAnimator.createCircleAnimation.draw(0, 500),
-// 	canvasAnimator.createCircleAnimation.dash(2000, -10, [15, 10], 4000),
-// 	canvasAnimator.createCircleAnimation.fold(0, 2000, -90),
-// ]);
+function ex3()
+{
 
-// canvasAnimator.drawLine(0, 0, 500, 500, [
-// 	canvasAnimator.createLineAnimation.grow(0, 500),
-// 	canvasAnimator.createLineAnimation.moveTo(0, 1000, 200, 200, 700, 400),
-// 	canvasAnimator.createLineAnimation.draw(0, 500),
-// 	canvasAnimator.createLineAnimation.fold(0, 500),
-// ], setStyle);
-// canvasAnimator.drawLine(50, 100, 300, 300, [
-// 	canvasAnimator.createLineAnimation.dash(500, 20, [20, 40]),
-// 	canvasAnimator.createLineAnimation.grow(0, 500),
-// 	canvasAnimator.createLineAnimation.moveTo(0, 1000, 300, 50, 100, 300),
-// 	canvasAnimator.createLineAnimation.draw(0, 500),
-// 	canvasAnimator.createLineAnimation.fold(0, 500),
-// ], setStyle);
+	canvasAnimator.drawCircle(100, 100, 50, false, [
+		canvasAnimator.createCircleAnimation.dash(0, 10, [15, 10], 2000),
+		canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
+		canvasAnimator.createCircleAnimation.draw(0, 500),
+		canvasAnimator.createCircleAnimation.moveTo(0, 1000, 130, 150, 70),
+		canvasAnimator.createCircleAnimation.draw(0, 500),
+		canvasAnimator.createCircleAnimation.dash(2000, -10, [15, 10], 4000),
+		canvasAnimator.createCircleAnimation.fold(0, 2000, -90),
+	]);
+}
+
+function ex4()
+{
+	canvasAnimator.drawLine(0, 0, 500, 500, [
+		canvasAnimator.createLineAnimation.grow(0, 500),
+		canvasAnimator.createLineAnimation.moveTo(0, 1000, 200, 200, 700, 400),
+		canvasAnimator.createLineAnimation.draw(0, 500),
+		canvasAnimator.createLineAnimation.fold(0, 500),
+	], setStyle);
+	canvasAnimator.drawLine(50, 100, 300, 300, [
+		canvasAnimator.createLineAnimation.dash(500, 20, [20, 40]),
+		canvasAnimator.createLineAnimation.grow(0, 500),
+		canvasAnimator.createLineAnimation.moveTo(0, 1000, 300, 50, 100, 300),
+		canvasAnimator.createLineAnimation.draw(0, 500),
+		canvasAnimator.createLineAnimation.fold(0, 500),
+	], setStyle);
+}
 
 const styles = [setStyle, setStyle2, setStyle3];
 function setStyle(ctx: CanvasRenderingContext2D)
@@ -89,29 +112,39 @@ function setStyle3(ctx: CanvasRenderingContext2D)
 	ctx.shadowOffsetY = 3;
 }
 
-// for (let i = 0; i < 200; i++) {
-// 	canvasAnimator.drawLine(rndInt(canvas.width), rndInt(canvas.height), rndInt(canvas.width), rndInt(canvas.height), [
-// 	canvasAnimator.createLineAnimation.grow(0, rndInt(800) + 200),
-// 	canvasAnimator.createLineAnimation.draw(0, rndInt(800) + 200),
-// 	canvasAnimator.createLineAnimation.fold(0, rndInt(800) + 200),
-// ], styles[rndInt(styles.length)]);
-// }
+function ex5()
+{
+	for (let i = 0; i < 200; i++)
+	{
+		canvasAnimator.drawLine(rndInt(canvas.width), rndInt(canvas.height), rndInt(canvas.width), rndInt(canvas.height), [
+			canvasAnimator.createLineAnimation.grow(0, rndInt(800) + 200),
+			canvasAnimator.createLineAnimation.draw(0, rndInt(800) + 200),
+			canvasAnimator.createLineAnimation.fold(0, rndInt(800) + 200),
+		], styles[rndInt(styles.length)]);
+	}
+}
 
-// for (let i = 0; i < 100; i++) {
-// canvasAnimator.drawCircle(rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10, [
-// 	canvasAnimator.createCircleAnimation.grow(0, rndInt(800) + 200, -90, true),
-// 	canvasAnimator.createCircleAnimation.draw(0, rndInt(800) + 200),
-// 	canvasAnimator.createCircleAnimation.fold(0, rndInt(800) + 200, -90),
-// ], styles[rndInt(styles.length)]);
-// }
+function ex6()
+{
+	for (let i = 0; i < 100; i++) {
+		canvasAnimator.drawCircle(rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10, false, [
+			canvasAnimator.createCircleAnimation.grow(0, rndInt(800) + 200, -90, true),
+			canvasAnimator.createCircleAnimation.draw(0, rndInt(800) + 200),
+			canvasAnimator.createCircleAnimation.fold(0, rndInt(800) + 200, -90),
+		], styles[rndInt(styles.length)]);
+	}
+}
 
-// for (let i = 0; i < 100; i++) {
-// 	canvasAnimator.drawCircle(rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10, [
-// 		canvasAnimator.createCircleAnimation.grow(0, rndInt(800) + 200, -90, true),
-// 		canvasAnimator.createCircleAnimation.moveTo(0, rndInt(1600) + 400, rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10),
-// 		canvasAnimator.createCircleAnimation.fold(0, rndInt(800) + 200, -90),
-// 	], styles[rndInt(styles.length)]);
-// }
+function ex7()
+{
+	for (let i = 0; i < 100; i++) {
+		canvasAnimator.drawCircle(rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10, false, [
+			canvasAnimator.createCircleAnimation.grow(0, rndInt(800) + 200, -90, true),
+			canvasAnimator.createCircleAnimation.moveTo(0, rndInt(1600) + 400, rndInt(canvas.width), rndInt(canvas.height), rndInt(100) + 10),
+			canvasAnimator.createCircleAnimation.fold(0, rndInt(800) + 200, -90),
+		], styles[rndInt(styles.length)]);
+	}
+}
 
 
 function rndInt(bound: number)
@@ -138,4 +171,11 @@ function getCanvasContext(canvas: HTMLCanvasElement)
 	const ctx = canvas.getContext("2d");
 	if (ctx == null) throw new Error(`Context not found`);
 	return ctx;
+}
+function setButtonOnClick(id: string, f: () => void)
+{
+	const el = <unknown | null>document.getElementById(id);
+	if (el == null) throw new Error(`${id} not found`);
+	if (!(el instanceof HTMLButtonElement)) throw new Error(`${id} element not Button`);
+	el.addEventListener("click", f);
 }
