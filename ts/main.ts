@@ -56,12 +56,12 @@ function ex3()
 {
 
 	canvasAnimator.drawCircle(100, 100, 50, false, [
-		canvasAnimator.createCircleAnimation.dash(0, 10, [15, 10], 2000),
+		canvasAnimator.createCircleAnimation.dash(0, -8, [15, 10], 2000),
 		canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
 		canvasAnimator.createCircleAnimation.draw(0, 500),
 		canvasAnimator.createCircleAnimation.moveTo(0, 1000, 130, 150, 70),
 		canvasAnimator.createCircleAnimation.draw(0, 500),
-		canvasAnimator.createCircleAnimation.dash(2000, -10, [15, 10], 4000),
+		canvasAnimator.createCircleAnimation.dash(2000, -16, [15, 10], 4000),
 		canvasAnimator.createCircleAnimation.fold(0, 2000, -90),
 	]);
 }
