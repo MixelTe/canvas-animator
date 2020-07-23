@@ -15,17 +15,25 @@ const canvasAnimator = new CanvasAnimator(ctx, canvas.width, canvas.height);
 
 canvasAnimator.setBackgroundColor("lightgreen");
 
-canvasAnimator.drawText(100, 100, "Hellow world(jg)aa", [
-	canvasAnimator.createTextAnimation.grow(0, 1000),
-	canvasAnimator.createTextAnimation.draw(0, 500),
-	canvasAnimator.createTextAnimation.moveTo(0, 1000, 300, 200),
-	canvasAnimator.createTextAnimation.draw(0, 500),
-	canvasAnimator.createTextAnimation.fold(0, 1000),
-], setStyle_text);
+// canvasAnimator.drawCircle(100, 100, 50, true, [
+// 	canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
+// 	canvasAnimator.createCircleAnimation.draw(0, 500),
+// 	canvasAnimator.createCircleAnimation.moveTo(0, 500, 100, 100, 70),
+// 	canvasAnimator.createCircleAnimation.draw(0, 500),
+// 	canvasAnimator.createCircleAnimation.fold(0, 2000, -90),
+// ]);
+
+// canvasAnimator.drawText(100, 100, "Hellow world", [
+// 	canvasAnimator.createTextAnimation.grow(0, 1000),
+// 	canvasAnimator.createTextAnimation.draw(0, 500),
+// 	canvasAnimator.createTextAnimation.moveTo(0, 1000, 300, 200),
+// 	canvasAnimator.createTextAnimation.draw(0, 500),
+// 	canvasAnimator.createTextAnimation.fold(0, 1000),
+// ], setStyle_text);
 
 function setStyle_text(ctx: CanvasRenderingContext2D)
 {
-	ctx.font = "30px Arial"
+	ctx.font = "30px Arial";
 }
 
 // canvasAnimator.drawCircle(100, 100, 50, [
@@ -44,10 +52,10 @@ function setStyle_text(ctx: CanvasRenderingContext2D)
 // 	canvasAnimator.createLineAnimation.draw(0, 500),
 // 	canvasAnimator.createLineAnimation.fold(0, 500),
 // ], setStyle);
-// canvasAnimator.drawLine(300, 500, 400, 200, [
+// canvasAnimator.drawLine(50, 100, 300, 300, [
 // 	canvasAnimator.createLineAnimation.dash(500, 20, [20, 40]),
 // 	canvasAnimator.createLineAnimation.grow(0, 500),
-// 	canvasAnimator.createLineAnimation.moveTo(0, 1000, 100, 300, 500, 600),
+// 	canvasAnimator.createLineAnimation.moveTo(0, 1000, 300, 50, 100, 300),
 // 	canvasAnimator.createLineAnimation.draw(0, 500),
 // 	canvasAnimator.createLineAnimation.fold(0, 500),
 // ], setStyle);

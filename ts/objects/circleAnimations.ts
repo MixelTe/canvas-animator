@@ -6,12 +6,13 @@ export class CanvasAnimator_CircleAnimator extends CanvasAnimator_Animator
 	private x: number;
 	private y: number;
 	private r: number;
+	private fill: boolean;
 	private setStyle: SetStyleFunction;
 	private animations: CanvasAnimator_CircleAnimationData[];
 	private curAnimation: CanvasAnimator_CircleAnimation | undefined;
 	private dashAnimations: CanvasAnimator_CircleAnimationData_Dash[] = [];
 	private dashAnimation: CanvasAnimator_CircleAnimation_Dash | undefined;
-	constructor(x: number, y: number, r: number, setStyle: SetStyleFunction, animations: CanvasAnimator_CircleAnimationData[])
+	constructor(x: number, y: number, r: number, fill: boolean, setStyle: SetStyleFunction, animations: CanvasAnimator_CircleAnimationData[])
 	{
 		super();
 		this.animations = animations;
@@ -19,6 +20,7 @@ export class CanvasAnimator_CircleAnimator extends CanvasAnimator_Animator
 		this.x = x;
 		this.y = y;
 		this.r = r;
+		this.fill = fill;
 
 		for (let i = this.animations.length - 1; i >= 0; i--)
 		{
@@ -42,7 +44,7 @@ export class CanvasAnimator_CircleAnimator extends CanvasAnimator_Animator
 				const el = this.dashAnimations[i];
 				if (el.startTime <= time - startTime)
 				{
-					const animation = el.createAnimation(this.x, this.y, this.r);
+					const animation = el.createAnimation(this.x, this.y, this.r, this.fill);
 					this.dashAnimation = animation;
 					this.dashAnimation.redraw(ctx, interFrame);
 					this.dashAnimations.splice(i, 1);
@@ -67,7 +69,7 @@ export class CanvasAnimator_CircleAnimator extends CanvasAnimator_Animator
 				const el = this.animations[i];
 				if (el.startTime <= time - startTime)
 				{
-					const animation = el.createAnimation(this.x, this.y, this.r);
+					const animation = el.createAnimation(this.x, this.y, this.r, this.fill);
 					this.curAnimation = animation;
 					this.animations.splice(i, 1);
 					this.curAnimation.redraw(ctx, interFrame);
@@ -100,15 +102,17 @@ export class CanvasAnimator_CircleAnimator extends CanvasAnimator_Animator
 abstract class CanvasAnimator_CircleAnimation
 {
 	public name = "Circle animation: %c";
+	protected fill: boolean;
 	protected x: number;
 	protected y: number;
 	protected r: number;
 	public startTime = 0;
-	constructor(x: number, y: number, r: number)
+	constructor(x: number, y: number, r: number, fill: boolean)
 	{
 		this.x = x;
 		this.y = y;
 		this.r = r;
+		this.fill = fill;
 	}
 	public abstract redraw(ctx: CanvasRenderingContext2D, time: number): { complited: boolean, x?: number, y?: number, r?: number };
 	protected normalizeCoordinates(start: number, current: number, end: number)
@@ -122,9 +126,9 @@ class CanvasAnimator_CircleAnimation_Draw extends CanvasAnimator_CircleAnimation
 	private duraction: number;
 	private duractionCur = 0;
 	private complited = false;
-	constructor(x: number, y: number, r: number, duraction?: number)
+	constructor(x: number, y: number, r: number, fill: boolean, duraction?: number)
 	{
-		super(x, y, r);
+		super(x, y, r, fill);
 		this.name += "Draw";
 		this.duraction = duraction || -1;
 	}
@@ -132,7 +136,8 @@ class CanvasAnimator_CircleAnimation_Draw extends CanvasAnimator_CircleAnimation
 	{
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-		ctx.stroke();
+		if (this.fill) ctx.fill();
+		else ctx.stroke();
 
 		if (!this.complited && this.duraction > 0)
 		{
@@ -149,9 +154,9 @@ class CanvasAnimator_CircleAnimation_GrowRight extends CanvasAnimator_CircleAnim
 	private growSpeed: number;
 	private reverse: boolean;
 	private complited = false;
-	constructor(time: number, startAngle: number, x: number, y: number, r: number, reverse: boolean)
+	constructor(time: number, startAngle: number, x: number, y: number, r: number, fill: boolean, reverse: boolean)
 	{
-		super(x, y, r);
+		super(x, y, r, fill);
 		this.name += "GrowRight";
 		if (reverse) this.name += " (reversed)";
 		this.reverse = reverse;
@@ -165,7 +170,8 @@ class CanvasAnimator_CircleAnimation_GrowRight extends CanvasAnimator_CircleAnim
 		ctx.beginPath();
 		if (this.reverse) ctx.arc(this.x, this.y, this.r, this.angle, this.startAngle);
 		else ctx.arc(this.x, this.y, this.r, this.startAngle, this.angle);
-		ctx.stroke();
+		if (this.fill) ctx.fill();
+		else ctx.stroke();
 
 		if (!this.complited)
 		{
@@ -183,9 +189,9 @@ class CanvasAnimator_CircleAnimation_GrowLeft extends CanvasAnimator_CircleAnima
 	private growSpeed: number;
 	private reverse: boolean;
 	private complited = false;
-	constructor(time: number, startAngle: number, x: number, y: number, r: number, reverse: boolean)
+	constructor(time: number, startAngle: number, x: number, y: number, r: number, fill: boolean, reverse: boolean)
 	{
-		super(x, y, r);
+		super(x, y, r, fill);
 		this.name += "GrowLeft";
 		if (reverse) this.name += " (reversed)";
 		this.reverse = reverse;
@@ -199,8 +205,8 @@ class CanvasAnimator_CircleAnimation_GrowLeft extends CanvasAnimator_CircleAnima
 		ctx.beginPath();
 		if (this.reverse) ctx.arc(this.x, this.y, this.r, this.angle, this.startAngle);
 		else ctx.arc(this.x, this.y, this.r, this.startAngle, this.angle);
-		// ctx.arc(this.x, this.y, this.r, this.startAngle, this.angle);
-		ctx.stroke();
+		if (this.fill) ctx.fill();
+		else ctx.stroke();
 
 		if (!this.complited)
 		{
@@ -220,9 +226,9 @@ class CanvasAnimator_CircleAnimation_Dash extends CanvasAnimator_CircleAnimation
 	private curDuration = 0;
 	private duration: number;
 	private complited = false;
-	constructor(x: number, y: number, r: number, dashSpeed: number, dashArray: number[], duration?: number)
+	constructor(x: number, y: number, r: number, fill: boolean, dashSpeed: number, dashArray: number[], duration?: number)
 	{
-		super(x, y, r);
+		super(x, y, r, fill);
 		this.name += "Dash";
 		this.dashArray = dashArray;
 		this.duration = duration || -1;
@@ -262,9 +268,9 @@ class CanvasAnimator_CircleAnimation_Move extends CanvasAnimator_CircleAnimation
 	private stepX: number;
 	private stepY: number;
 	private stepR: number;
-	constructor(time: number, x: number, y: number, r: number, x2: number, y2: number, r2: number)
+	constructor(time: number, x: number, y: number, r: number, fill: boolean, x2: number, y2: number, r2: number)
 	{
-		super(x, y, r);
+		super(x, y, r, fill);
 		this.name += "Move";
 		this.x2 = x2;
 		this.y2 = y2;
@@ -281,7 +287,8 @@ class CanvasAnimator_CircleAnimation_Move extends CanvasAnimator_CircleAnimation
 	{
 		ctx.beginPath();
 		ctx.arc(this.xCur, this.yCur, this.rCur, 0, Math.PI * 2);
-		ctx.stroke();
+		if (this.fill) ctx.fill();
+		else ctx.stroke();
 
 		if (!this.complited)
 		{
@@ -311,7 +318,7 @@ export abstract class CanvasAnimator_CircleAnimationData
 	{
 		this.startTime = startTime;
 	}
-	public abstract createAnimation(x: number, y: number, r: number): CanvasAnimator_CircleAnimation
+	public abstract createAnimation(x: number, y: number, r: number, fill: boolean): CanvasAnimator_CircleAnimation
 }
 export class CanvasAnimator_CircleAnimationData_Draw extends CanvasAnimator_CircleAnimationData
 {
@@ -321,9 +328,9 @@ export class CanvasAnimator_CircleAnimationData_Draw extends CanvasAnimator_Circ
 		super(startTime);
 		this.duraction = duraction || -1;
 	}
-	public createAnimation(x: number, y: number, r: number)
+	public createAnimation(x: number, y: number, r: number, fill: boolean)
 	{
-		return new CanvasAnimator_CircleAnimation_Draw(x, y, r, this.duraction);
+		return new CanvasAnimator_CircleAnimation_Draw(x, y, r, fill, this.duraction);
 	}
 }
 export class CanvasAnimator_CircleAnimationData_Grow extends CanvasAnimator_CircleAnimationData
@@ -339,10 +346,10 @@ export class CanvasAnimator_CircleAnimationData_Grow extends CanvasAnimator_Circ
 		this.startAngle = startAngle;
 
 	}
-	public createAnimation(x: number, y: number, r: number)
+	public createAnimation(x: number, y: number, r: number, fill: boolean)
 	{
-		if (this.reverse) return new CanvasAnimator_CircleAnimation_GrowLeft(this.time, this.startAngle, x, y, r, true);
-		else return new CanvasAnimator_CircleAnimation_GrowRight(this.time, this.startAngle, x, y, r, false);
+		if (this.reverse) return new CanvasAnimator_CircleAnimation_GrowLeft(this.time, this.startAngle, x, y, r, fill, true);
+		else return new CanvasAnimator_CircleAnimation_GrowRight(this.time, this.startAngle, x, y, r, fill, false);
 	}
 }
 export class CanvasAnimator_CircleAnimationData_Fold extends CanvasAnimator_CircleAnimationData
@@ -357,10 +364,10 @@ export class CanvasAnimator_CircleAnimationData_Fold extends CanvasAnimator_Circ
 		this.reverse = reverse || false;
 		this.startAngle = startAngle;
 	}
-	public createAnimation(x: number, y: number, r: number)
+	public createAnimation(x: number, y: number, r: number, fill: boolean)
 	{
-		if (this.reverse) return new CanvasAnimator_CircleAnimation_GrowRight(this.time, this.startAngle, x, y, r, true);
-		else return new CanvasAnimator_CircleAnimation_GrowLeft(this.time, this.startAngle, x, y, r, false);
+		if (this.reverse) return new CanvasAnimator_CircleAnimation_GrowRight(this.time, this.startAngle, x, y, r, fill, true);
+		else return new CanvasAnimator_CircleAnimation_GrowLeft(this.time, this.startAngle, x, y, r, fill, false);
 	}
 }
 export class CanvasAnimator_CircleAnimationData_Dash extends CanvasAnimator_CircleAnimationData
@@ -375,9 +382,9 @@ export class CanvasAnimator_CircleAnimationData_Dash extends CanvasAnimator_Circ
 		this.dashArray = dashArray;
 		this.duration = duration;
 	}
-	public createAnimation(x: number, y: number, r: number)
+	public createAnimation(x: number, y: number, r: number, fill: boolean)
 	{
-		return new CanvasAnimator_CircleAnimation_Dash(x, y, r, this.dashSpeed, this.dashArray, this.duration);
+		return new CanvasAnimator_CircleAnimation_Dash(x, y, r, fill, this.dashSpeed, this.dashArray, this.duration);
 	}
 }
 export class CanvasAnimator_CircleAnimationData_MoveTo extends CanvasAnimator_CircleAnimationData
@@ -394,8 +401,8 @@ export class CanvasAnimator_CircleAnimationData_MoveTo extends CanvasAnimator_Ci
 		this.y = y;
 		this.r = r;
 	}
-	public createAnimation(x: number, y: number, r: number)
+	public createAnimation(x: number, y: number, r: number, fill: boolean)
 	{
-		return new CanvasAnimator_CircleAnimation_Move(this.time, x, y, r, this.x, this.y, this.r);
+		return new CanvasAnimator_CircleAnimation_Move(this.time, x, y, r, fill, this.x, this.y, this.r);
 	}
 }

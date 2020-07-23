@@ -73,11 +73,11 @@ export class CanvasAnimator
 		if (styles == undefined) styles = () => {};
 		this.animators.push(new CanvasAnimator_LineAnimator(sx, sy, ex, ey, styles, animation));
 	}
-	public drawCircle(sx: number, sy: number, ex: number, animation?: CanvasAnimator_CircleAnimationData[], styles?: SetStyleFunction)
+	public drawCircle(x: number, y: number, r: number, fill: boolean, animation?: CanvasAnimator_CircleAnimationData[], styles?: SetStyleFunction)
 	{
 		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_CircleAnimationData_Draw(0)];
 		if (styles == undefined) styles = () => {};
-		this.animators.push(new CanvasAnimator_CircleAnimator(sx, sy, ex, styles, animation));
+		this.animators.push(new CanvasAnimator_CircleAnimator(x, y, r, fill, styles, animation));
 	}
 	public drawText(x: number, y: number, text: string, animation?: CanvasAnimator_TextAnimationData[], styles?: SetStyleFunction)
 	{
