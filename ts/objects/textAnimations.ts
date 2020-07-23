@@ -134,8 +134,8 @@ class CanvasAnimator_TextAnimation_Grow extends CanvasAnimator_TextAnimation
 
 			this.rwCur += this.step * time;
 
-			this.rwCur = this.normalizeCoordinates(this.rx, this.rwCur, this.rx2);
-			if (this.rwCur == this.rx2) this.complited = true;
+			this.rwCur = this.normalizeCoordinates(this.rx - this.x, this.rwCur, this.rx2 - this.x);
+			if (this.rwCur == this.rx2 - this.x) this.complited = true;
 		}
 
 		ctx.beginPath();
@@ -179,13 +179,13 @@ class CanvasAnimator_TextAnimation_Fold extends CanvasAnimator_TextAnimation
 			this.step = (this.rx2 - this.rx) / this.time;
 			if (this.firstRedraw)
 			{
-				this.rwCur = this.rx2;
+				this.rwCur = this.rx2 - this.x;
 				this.firstRedraw = false;
 			}
 
 			this.rwCur -= this.step * time;
 
-			this.rwCur = this.normalizeCoordinates(this.rx2, this.rwCur, 0);
+			this.rwCur = this.normalizeCoordinates(this.rx2 - this.x, this.rwCur, 0);
 			if (this.rwCur == 0) this.complited = true;
 		}
 

@@ -2,7 +2,7 @@ import { CanvasAnimator_LineAnimator, CanvasAnimator_LineAnimationData, CanvasAn
 import { CanvasAnimator_CircleAnimationData_Draw, CanvasAnimator_CircleAnimationData_Grow, CanvasAnimator_CircleAnimationData_Fold, CanvasAnimator_CircleAnimationData_Dash, CanvasAnimator_CircleAnimationData_MoveTo, CanvasAnimator_CircleAnimationData, CanvasAnimator_CircleAnimator } from "./objects/circleAnimations.js";
 import { CanvasAnimator_Animator } from "./objects/someBase.js";
 import { CanvasAnimator_TextAnimationData_Draw, CanvasAnimator_TextAnimator, CanvasAnimator_TextAnimationData, CanvasAnimator_TextAnimationData_Grow, CanvasAnimator_TextAnimationData_Fold, CanvasAnimator_TextAnimationData_MoveTo } from "./objects/textAnimations.js";
-import { CanvasAnimator_RectAnimationData_Draw, CanvasAnimator_RectAnimationData, CanvasAnimator_RectAnimator, CanvasAnimator_RectAnimationData_Grow } from "./objects/rectAnimations.js";
+import { CanvasAnimator_RectAnimationData_Draw, CanvasAnimator_RectAnimationData, CanvasAnimator_RectAnimator, CanvasAnimator_RectAnimationData_Grow, CanvasAnimator_RectAnimationData_Dash } from "./objects/rectAnimations.js";
 
 export class CanvasAnimator
 {
@@ -44,6 +44,7 @@ export class CanvasAnimator
 		foldX: this.createRectAnimationFoldX,
 		foldY: this.createRectAnimationFoldY,
 		foldXY: this.createRectAnimationFoldXY,
+		dash: this.createRectAnimationDash,
 		// moveTo: this.createRectAnimationMoveTo,
 	};
 
@@ -202,6 +203,10 @@ export class CanvasAnimator
 	private createRectAnimationFoldXY(startTime: number, duraction: number, toRight: boolean, toTop: boolean)
 	{
 		return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, true, true, toTop, true);
+	}
+	private createRectAnimationDash(startTime: number, dashSpeed: number, dashArray: number[], duration?: number)
+	{
+		return new CanvasAnimator_RectAnimationData_Dash(startTime, dashSpeed, dashArray, duration);
 	}
 }
 export type SetStyleFunction = (ctx: CanvasRenderingContext2D) => void;
