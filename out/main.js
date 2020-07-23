@@ -1,7 +1,7 @@
 import { CanvasAnimator } from "./canvasAnimator.js";
 const canvas = getCanvas("canvas");
 const w = window.innerWidth - 17;
-const h = window.innerHeight - 42;
+const h = window.innerHeight - 72;
 canvas.style.width = `${w}`;
 canvas.style.height = `${h}`;
 canvas.width = w;
