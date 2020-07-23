@@ -155,7 +155,7 @@ function setStyle3(ctx: CanvasRenderingContext2D)
 
 function ex5()
 {
-	for (let i = 0; i < 200; i++)
+	for (let i = 0; i < 100; i++)
 	{
 		canvasAnimator.drawLine(rndInt(canvas.width), rndInt(canvas.height), rndInt(canvas.width), rndInt(canvas.height), true, [
 			canvasAnimator.createLineAnimation.grow(0, rndInt(800) + 200),

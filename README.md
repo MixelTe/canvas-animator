@@ -40,9 +40,9 @@ canvasAnimator.drawCircle(x: number, y: number, radius: number, fill: boolean, c
 const textAnimation  = canvasAnimator.createTextAnimation.[animation]
 canvasAnimator.drawText(x: number, y: number, text: string, countTimeFromNow: boolean, animations: textAnimation[]);
 ```
-if countTimeFromNow is true zero time for animations will be when you call draw function
+if countTimeFromNow is true, zero time for animations will be when the draw function is called
 
-if countTimeFromNow is false zero time for animations will be when you create canvasAnimator
+if countTimeFromNow is false, zero time for animations will be when the canvasAnimator is created
 
 
 ## Animations
@@ -99,6 +99,10 @@ function setStyle(ctx: CanvasRenderingContext2D) {
 	//for example:
 	ctx.strokeStyle = "blue";
 }
+```
+## Background color
+``` ts
+canvasAnimator.setBackgroundColor(color: string);
 ```
 
 # Working examples
