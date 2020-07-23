@@ -62,13 +62,13 @@ export class CanvasAnimator
 
 	public drawLine(sx: number, sy: number, ex: number, ey: number, animation?: CanvasAnimator_LineAnimationData[], styles?: SetStyleFunction)
 	{
-		if (animation == undefined) animation = [];
+		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_LineAnimationData_Draw(0)];
 		if (styles == undefined) styles = () => {};
 		this.animators.push(new CanvasAnimator_LineAnimator(sx, sy, ex, ey, styles, animation));
 	}
 	public drawCircle(sx: number, sy: number, ex: number, animation?: CanvasAnimator_CircleAnimationData[], styles?: SetStyleFunction)
 	{
-		if (animation == undefined) animation = [];
+		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_CircleAnimationData_Draw(0)];
 		if (styles == undefined) styles = () => {};
 		this.animators.push(new CanvasAnimator_CircleAnimator(sx, sy, ex, styles, animation));
 	}
