@@ -2,6 +2,7 @@ import { CanvasAnimator_LineAnimator, CanvasAnimator_LineAnimationData, CanvasAn
 import { CanvasAnimator_CircleAnimationData_Draw, CanvasAnimator_CircleAnimationData_Grow, CanvasAnimator_CircleAnimationData_Fold, CanvasAnimator_CircleAnimationData_Dash, CanvasAnimator_CircleAnimationData_MoveTo, CanvasAnimator_CircleAnimationData, CanvasAnimator_CircleAnimator } from "./objects/circleAnimations.js";
 import { CanvasAnimator_Animator } from "./objects/someBase.js";
 import { CanvasAnimator_TextAnimationData_Draw, CanvasAnimator_TextAnimator, CanvasAnimator_TextAnimationData, CanvasAnimator_TextAnimationData_Grow, CanvasAnimator_TextAnimationData_Fold, CanvasAnimator_TextAnimationData_MoveTo } from "./objects/textAnimations.js";
+import { CanvasAnimator_RectAnimationData_Draw, CanvasAnimator_RectAnimationData, CanvasAnimator_RectAnimator, CanvasAnimator_RectAnimationData_Grow } from "./objects/rectAnimations.js";
 
 export class CanvasAnimator
 {
@@ -33,6 +34,17 @@ export class CanvasAnimator
 		grow: this.createTextAnimationGrow,
 		fold: this.createTextAnimationFold,
 		moveTo: this.createTextAnimationMoveTo,
+	};
+	public createRectAnimation = {
+		draw: this.createRectAnimationDraw,
+		growFullControls: this.createRectAnimationGrowFull,
+		growX: this.createRectAnimationGrowX,
+		growY: this.createRectAnimationGrowY,
+		growXY: this.createRectAnimationGrowXY,
+		foldX: this.createRectAnimationFoldX,
+		foldY: this.createRectAnimationFoldY,
+		foldXY: this.createRectAnimationFoldXY,
+		// moveTo: this.createRectAnimationMoveTo,
 	};
 
 	constructor(ctx: CanvasRenderingContext2D, drawZoneWidth: number, drawZoneHeight: number)
@@ -84,6 +96,12 @@ export class CanvasAnimator
 		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_TextAnimationData_Draw(0)];
 		if (styles == undefined) styles = () => {};
 		this.animators.push(new CanvasAnimator_TextAnimator(x, y, text, styles, animation));
+	}
+	public drawRect(x: number, y: number, width: number, height: number, animation?: CanvasAnimator_RectAnimationData[], styles?: SetStyleFunction)
+	{
+		if (animation == undefined || animation.length == 0) animation = [new CanvasAnimator_RectAnimationData_Draw(0)];
+		if (styles == undefined) styles = () => {};
+		this.animators.push(new CanvasAnimator_RectAnimator(x, y, width, height, styles, animation));
 	}
 
 	public setBackgroundColor(color: string)
@@ -147,6 +165,39 @@ export class CanvasAnimator
 	}
 	private createTextAnimationMoveTo(startTime: number, duraction: number, x: number, y: number) {
 		return new CanvasAnimator_TextAnimationData_MoveTo(startTime, duraction, x, y);
+	}
+
+	private createRectAnimationDraw(startTime: number, duraction?: number)
+	{
+		return new CanvasAnimator_RectAnimationData_Draw(startTime, duraction);
+	}
+	private createRectAnimationGrowFull(startTime: number, duraction: number, xAxis: boolean, toRight: boolean, reversX: boolean, yAxis: boolean, toTop: boolean, reversY: boolean)
+	{
+		return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, xAxis, toRight, reversX, yAxis, toTop, reversY);
+	}
+	private createRectAnimationGrowX(startTime: number, duraction: number, toRight: boolean)
+	{
+		return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, false, false, false, false);
+	}
+	private createRectAnimationGrowY(startTime: number, duraction: number, toTop: boolean)
+	{
+		return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, false, false, false, true, toTop, false);
+	}
+	private createRectAnimationGrowXY(startTime: number, duraction: number, toRight: boolean, toTop: boolean)
+	{
+		return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, false, true, toTop, false);
+	}
+	private createRectAnimationFoldX(startTime: number, duraction: number, toRight: boolean)
+	{
+		return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, true, false, false, false);
+	}
+	private createRectAnimationFoldY(startTime: number, duraction: number, toTop: boolean)
+	{
+		return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, false, false, false, true, toTop, true);
+	}
+	private createRectAnimationFoldXY(startTime: number, duraction: number, toRight: boolean, toTop: boolean)
+	{
+		return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, true, true, toTop, true);
 	}
 }
 export type SetStyleFunction = (ctx: CanvasRenderingContext2D) => void;
