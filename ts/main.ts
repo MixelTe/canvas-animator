@@ -14,6 +14,20 @@ const ctx = getCanvasContext(canvas);
 const canvasAnimator = new CanvasAnimator(ctx, canvas.width, canvas.height);
 
 canvasAnimator.setBackgroundColor("lightgreen");
+
+canvasAnimator.drawText(100, 100, "Hellow world(jg)aa", [
+	canvasAnimator.createTextAnimation.grow(0, 1000),
+	canvasAnimator.createTextAnimation.draw(0, 500),
+	canvasAnimator.createTextAnimation.moveTo(0, 1000, 300, 200),
+	canvasAnimator.createTextAnimation.draw(0, 500),
+	canvasAnimator.createTextAnimation.fold(0, 1000),
+], setStyle_text);
+
+function setStyle_text(ctx: CanvasRenderingContext2D)
+{
+	ctx.font = "30px Arial"
+}
+
 // canvasAnimator.drawCircle(100, 100, 50, [
 // 	canvasAnimator.createCircleAnimation.dash(0, 10, [15, 10], 2000),
 // 	canvasAnimator.createCircleAnimation.grow(0, 2000, -90, true),
@@ -24,12 +38,12 @@ canvasAnimator.setBackgroundColor("lightgreen");
 // 	canvasAnimator.createCircleAnimation.fold(0, 2000, -90),
 // ]);
 
-canvasAnimator.drawLine(0, 0, 500, 500, [
-	canvasAnimator.createLineAnimation.grow(0, 500),
-	canvasAnimator.createLineAnimation.moveTo(0, 1000, 200, 200, 700, 400),
-	canvasAnimator.createLineAnimation.draw(0, 500),
-	canvasAnimator.createLineAnimation.fold(0, 500),
-], setStyle);
+// canvasAnimator.drawLine(0, 0, 500, 500, [
+// 	canvasAnimator.createLineAnimation.grow(0, 500),
+// 	canvasAnimator.createLineAnimation.moveTo(0, 1000, 200, 200, 700, 400),
+// 	canvasAnimator.createLineAnimation.draw(0, 500),
+// 	canvasAnimator.createLineAnimation.fold(0, 500),
+// ], setStyle);
 // canvasAnimator.drawLine(300, 500, 400, 200, [
 // 	canvasAnimator.createLineAnimation.dash(500, 20, [20, 40]),
 // 	canvasAnimator.createLineAnimation.grow(0, 500),
