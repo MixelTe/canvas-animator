@@ -2,7 +2,7 @@ import { CanvasAnimator_LineAnimator, CanvasAnimator_LineAnimationData, CanvasAn
 import { CanvasAnimator_CircleAnimationData_Draw, CanvasAnimator_CircleAnimationData_Grow, CanvasAnimator_CircleAnimationData_Fold, CanvasAnimator_CircleAnimationData_Dash, CanvasAnimator_CircleAnimationData_MoveTo, CanvasAnimator_CircleAnimationData, CanvasAnimator_CircleAnimator } from "./objects/circleAnimations.js";
 import { CanvasAnimator_Animator } from "./objects/someBase.js";
 import { CanvasAnimator_TextAnimationData_Draw, CanvasAnimator_TextAnimator, CanvasAnimator_TextAnimationData, CanvasAnimator_TextAnimationData_Grow, CanvasAnimator_TextAnimationData_Fold, CanvasAnimator_TextAnimationData_MoveTo } from "./objects/textAnimations.js";
-import { CanvasAnimator_RectAnimationData_Draw, CanvasAnimator_RectAnimationData, CanvasAnimator_RectAnimator, CanvasAnimator_RectAnimationData_Grow, CanvasAnimator_RectAnimationData_Dash } from "./objects/rectAnimations.js";
+import { CanvasAnimator_RectAnimationData_Draw, CanvasAnimator_RectAnimationData, CanvasAnimator_RectAnimator, CanvasAnimator_RectAnimationData_Grow, CanvasAnimator_RectAnimationData_Dash, CanvasAnimator_RectAnimationData_MoveTo } from "./objects/rectAnimations.js";
 
 export class CanvasAnimator
 {
@@ -45,7 +45,7 @@ export class CanvasAnimator
 		foldY: this.createRectAnimationFoldY,
 		foldXY: this.createRectAnimationFoldXY,
 		dash: this.createRectAnimationDash,
-		// moveTo: this.createRectAnimationMoveTo,
+		moveTo: this.createRectAnimationMoveTo,
 	};
 
 	constructor(ctx: CanvasRenderingContext2D, drawZoneWidth: number, drawZoneHeight: number)
@@ -207,6 +207,9 @@ export class CanvasAnimator
 	private createRectAnimationDash(startTime: number, dashSpeed: number, dashArray: number[], duration?: number)
 	{
 		return new CanvasAnimator_RectAnimationData_Dash(startTime, dashSpeed, dashArray, duration);
+	}
+	private createRectAnimationMoveTo(startTime: number, time: number, x: number, y: number, width: number, height: number) {
+		return new CanvasAnimator_RectAnimationData_MoveTo(startTime, time, x, y, width, height);
 	}
 }
 export type SetStyleFunction = (ctx: CanvasRenderingContext2D) => void;

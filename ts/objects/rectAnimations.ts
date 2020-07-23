@@ -3,24 +3,24 @@ import { CanvasAnimator_Animator, logEnd, logStart } from "./someBase.js";
 
 export class CanvasAnimator_RectAnimator extends CanvasAnimator_Animator
 {
-	private sx: number;
-	private sy: number;
-	private ex: number;
-	private ey: number;
+	private x: number;
+	private y: number;
+	private width: number;
+	private height: number;
 	private setStyle: SetStyleFunction;
 	private animations: CanvasAnimator_RectAnimationData[];
 	private curAnimation: CanvasAnimator_RectAnimation | undefined;
 	private dashAnimations: CanvasAnimator_RectAnimationData_Dash[] = [];
 	private dashAnimation: CanvasAnimator_RectAnimation_Dash | undefined;
-	constructor(startTime: number, calcTimeFrElCr: boolean, sx: number, sy: number, ex: number, ey: number, setStyle: SetStyleFunction, animations: CanvasAnimator_RectAnimationData[])
+	constructor(startTime: number, calcTimeFrElCr: boolean, x: number, y: number, width: number, height: number, setStyle: SetStyleFunction, animations: CanvasAnimator_RectAnimationData[])
 	{
 		super(startTime, calcTimeFrElCr);
 		this.animations = animations;
 		this.setStyle = setStyle;
-		this.sx = sx;
-		this.sy = sy;
-		this.ex = ex;
-		this.ey = ey;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 
 		for (let i = this.animations.length - 1; i >= 0; i--)
 		{
@@ -47,7 +47,7 @@ export class CanvasAnimator_RectAnimator extends CanvasAnimator_Animator
 				if (this.calculateTimeFromElementCreating) elTime += this.startTime;
 				if (elTime <= time - startTime)
 				{
-					const animation = el.createAnimation(this.sx, this.sy, this.ex, this.ey);
+					const animation = el.createAnimation(this.x, this.y, this.width, this.height);
 					this.dashAnimation = animation;
 					this.dashAnimation.redraw(ctx, interFrame);
 					this.dashAnimations.splice(i, 1);
@@ -75,7 +75,7 @@ export class CanvasAnimator_RectAnimator extends CanvasAnimator_Animator
 				if (this.calculateTimeFromElementCreating) elTime += this.startTime;
 				if (elTime <= time - startTime)
 				{
-					const animation = el.createAnimation(this.sx, this.sy, this.ex, this.ey);
+					const animation = el.createAnimation(this.x, this.y, this.width, this.height);
 					this.curAnimation = animation;
 					this.animations.splice(i, 1);
 					this.curAnimation.redraw(ctx, interFrame);
@@ -93,10 +93,10 @@ export class CanvasAnimator_RectAnimator extends CanvasAnimator_Animator
 				logEnd(this.curAnimation.name, time, startTime);
 				this.curAnimation = undefined;
 			}
-			if (result.x != undefined) this.sx = result.x;
-			if (result.y != undefined) this.sy = result.y;
-			if (result.width != undefined) this.ex = result.width;
-			if (result.height != undefined) this.ey = result.height;
+			if (result.x != undefined) this.x = result.x;
+			if (result.y != undefined) this.y = result.y;
+			if (result.width != undefined) this.width = result.width;
+			if (result.height != undefined) this.height = result.height;
 		}
 		ctx.restore();
 
@@ -364,62 +364,60 @@ class CanvasAnimator_RectAnimation_Dash extends CanvasAnimator_RectAnimation
 class CanvasAnimator_RectAnimation_Move extends CanvasAnimator_RectAnimation
 {
 	private complited = false;
-	protected sx2: number;
-	protected sy2: number;
-	protected ex2: number;
-	protected ey2: number;
-	protected sxCur: number;
-	protected syCur: number;
-	protected exCur: number;
-	protected eyCur: number;
-	private stepX1: number;
-	private stepX2: number;
-	private stepY1: number;
-	private stepY2: number;
-	constructor(time: number, sx: number, sy: number, ex: number, ey: number, sx2: number, sy2: number, ex2: number, ey2: number)
+	protected x2: number;
+	protected y2: number;
+	protected width2: number;
+	protected height2: number;
+	protected xCur: number;
+	protected yCur: number;
+	protected widthCur: number;
+	protected heightCur: number;
+	private stepX: number;
+	private stepY: number;
+	private stepWidth: number;
+	private stepHeight: number;
+	constructor(time: number, x: number, y: number, width: number, height: number, x2: number, y2: number, width2: number, height2: number)
 	{
-		super(sx, sy, ex, ey);
+		super(x, y, width, height);
 		this.name += "Move";
-		this.sx2 = sx2;
-		this.sy2 = sy2;
-		this.ex2 = ex2;
-		this.ey2 = ey2;
-		this.sxCur = sx;
-		this.syCur = sy;
-		this.exCur = ex;
-		this.eyCur = ey;
+		this.x2 = x2;
+		this.y2 = y2;
+		this.width2 = width2;
+		this.height2 = height2;
+		this.xCur = x;
+		this.yCur = y;
+		this.widthCur = width;
+		this.heightCur = height;
 
-		this.stepX1 = (sx2 - sx) / time;
-		this.stepX2 = (ex2 - ex) / time;
-		this.stepY1 = (sy2 - sy) / time;
-		this.stepY2 = (ey2 - ey) / time;
+		this.stepX = (x2 - x) / time;
+		this.stepWidth = (width2 - width) / time;
+		this.stepY = (y2 - y) / time;
+		this.stepHeight = (height2 - height) / time;
 	}
 	public redraw(ctx: CanvasRenderingContext2D, time: number)
 	{
-		ctx.beginPath();
-		ctx.moveTo(this.sxCur, this.syCur);
-		ctx.lineTo(this.exCur, this.eyCur);
-		ctx.stroke();
+		ctx.fillRect(this.xCur, this.yCur, this.widthCur, this.heightCur);
+		ctx.strokeRect(this.xCur, this.yCur, this.widthCur, this.heightCur);
 
 		if (!this.complited)
 		{
-			this.sxCur += this.stepX1 * time;
-			this.syCur += this.stepY1 * time;
-			this.exCur += this.stepX2 * time;
-			this.eyCur += this.stepY2 * time;
+			this.xCur += this.stepX * time;
+			this.yCur += this.stepY * time;
+			this.widthCur += this.stepWidth * time;
+			this.heightCur += this.stepHeight * time;
 
-			this.sxCur = this.normalizeCoordinates(this.x, this.sxCur, this.sx2);
-			this.syCur = this.normalizeCoordinates(this.y, this.syCur, this.sy2);
-			this.exCur = this.normalizeCoordinates(this.width, this.exCur, this.ex2);
-			this.eyCur = this.normalizeCoordinates(this.height, this.eyCur, this.ey2);
+			this.xCur = this.normalizeCoordinates(this.x, this.xCur, this.x2);
+			this.yCur = this.normalizeCoordinates(this.y, this.yCur, this.y2);
+			this.widthCur = this.normalizeCoordinates(this.width, this.widthCur, this.width2);
+			this.heightCur = this.normalizeCoordinates(this.height, this.heightCur, this.height2);
 
-			if (this.sxCur == this.sx2 && this.syCur == this.sy2 &&
-				this.exCur == this.ex2 && this.eyCur == this.ey2)
+			if (this.xCur == this.x2 && this.yCur == this.y2 &&
+				this.widthCur == this.width2 && this.heightCur == this.height2)
 			{
 				this.complited = true;
 			}
 		}
-		return { complited: this.complited, sx: this.sxCur, sy: this.syCur, ex: this.exCur, ey: this.eyCur };
+		return { complited: this.complited, x: this.xCur, y: this.yCur, width: this.widthCur, height: this.heightCur };
 	}
 }
 
@@ -492,21 +490,21 @@ export class CanvasAnimator_RectAnimationData_Dash extends CanvasAnimator_RectAn
 export class CanvasAnimator_RectAnimationData_MoveTo extends CanvasAnimator_RectAnimationData
 {
 	public time: number;
-	public sx: number;
-	public sy: number;
-	public ex: number;
-	public ey: number;
-	constructor(startTime: number, time: number, sx: number, sy: number, ex: number, ey: number)
+	public x: number;
+	public y: number;
+	public width: number;
+	public height: number;
+	constructor(startTime: number, time: number, x: number, y: number, width: number, height: number)
 	{
 		super(startTime);
 		this.time = time;
-		this.sx = sx;
-		this.sy = sy;
-		this.ex = ex;
-		this.ey = ey;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 	}
-	public createAnimation(sx: number, sy: number, ex: number, ey: number)
+	public createAnimation(x: number, y: number, width: number, height: number)
 	{
-		return new CanvasAnimator_RectAnimation_Move(this.time, sx, sy, ex, ey, this.sx, this.sy, this.ex, this.ey);
+		return new CanvasAnimator_RectAnimation_Move(this.time, x, y, width, height, this.x, this.y, this.width, this.height);
 	}
 }

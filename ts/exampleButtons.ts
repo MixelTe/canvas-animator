@@ -14,6 +14,19 @@ export function setListeners()
 	setButtonOnClick("example9", ex9);
 	setButtonOnClick("example10", ex10);
 	setButtonOnClick("example11", ex11);
+	setButtonOnClick("example12", ex12);
+}
+
+function ex12()
+{
+	canvasAnimator.drawRect(150, 150, 0, 0, true, [
+		canvasAnimator.createRectAnimation.moveTo(0, 1000, 100, 100, 100, 100),
+		canvasAnimator.createRectAnimation.moveTo(0, 1000, 50, 100, 150, 100),
+		canvasAnimator.createRectAnimation.moveTo(0, 1000, 50, 100, 200, 100),
+		canvasAnimator.createRectAnimation.moveTo(0, 1000, 50, 50, 200, 150),
+		canvasAnimator.createRectAnimation.moveTo(0, 1000, 50, 50, 200, 200),
+		canvasAnimator.createRectAnimation.moveTo(0, 1000, 150, 150, 0, 0),
+	]);
 }
 
 function ex9()
