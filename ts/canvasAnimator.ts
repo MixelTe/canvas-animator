@@ -211,8 +211,8 @@ export class CanvasAnimator
 	{
 		return new CanvasAnimator_RectAnimationData_Dash(startTime, dashSpeed, dashArray, duration);
 	}
-	private createRectAnimationMoveTo(startTime: number, time: number, x: number, y: number, width: number, height: number) {
-		return new CanvasAnimator_RectAnimationData_MoveTo(startTime, time, x, y, width, height);
+	private createRectAnimationMoveTo(startTime: number, duraction: number, x: number, y: number, width: number, height: number) {
+		return new CanvasAnimator_RectAnimationData_MoveTo(startTime, duraction, x, y, width, height);
 	}
 }
 export type SetStyleFunction = (ctx: CanvasRenderingContext2D) => void;
