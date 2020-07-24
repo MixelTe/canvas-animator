@@ -5,21 +5,79 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Canvas Animator</title>
 	<script src="out/main.js" type="module"></script>
+	<style>
+		table, td {
+			text-align: center;
+			border: 1px solid black;
+			border-collapse: collapse;
+			padding: 4px;
+		}
+		button {
+			margin-left: 2px;
+			margin-right: 2px;
+		}
+	</style>
 </head>
 <body>
-	<canvas width="700" height="600" id="canvas"></canvas>
-	<button id="example0">example 0</button>
-	<button id="example1">example 1</button>
-	<button id="example2">example 2</button>
-	<button id="example3">example 3</button>
-	<button id="example4">example 4</button>
-	<button id="example5">example 5</button>
-	<button id="example6">example 6</button>
-	<button id="example7">example 7</button>
-	<button id="example8">example 8</button>
-	<button id="example9">example 9</button>
-	<button id="example10">example 10</button>
-	<button id="example11">example 11</button>
-	<button id="example12">example 12</button>
+	<div id="canvasDiv" style="width: 100%;">
+		<canvas width="100%" height="650" id="canvas"></canvas>
+	</div>
+	<table style="background-color: aquamarine; border: 2px solid black;">
+		<tr>
+			<th>Animaton</th>
+			<th>Line</th>
+			<th>Circle</th>
+			<th>Text</th>
+			<th>Rect</th>
+		</tr>
+		<tr>
+			<td>grow</td>
+			<td><button id="growLine">start</button></td>
+			<td><button id="growCircle">start</button></td>
+			<td><button id="growText">start</button></td>
+			<td><button id="growRect">start</button></td>
+		</tr>
+		<tr>
+			<td>fold</td>
+			<td><button id="foldLine">start</button></td>
+			<td><button id="foldCircle">start</button></td>
+			<td><button id="foldText">start</button></td>
+			<td><button id="foldRect">start</button></td>
+		</tr>
+		<tr>
+			<td>dash</td>
+			<td colspan="4"><button id="dash">start</button></td>
+		</tr>
+		<tr>
+			<td>moveTo</td>
+			<td><button id="moveLine">start</button><button id="moveLine2">start</button></td>
+			<td><button id="moveCircle">start</button></td>
+			<td><button id="moveText">start</button></td>
+			<td><button id="moveRect">start</button></td>
+		</tr>
+		<tr>
+			<th colspan="5">Combinations:</th>
+		</tr>
+		<tr>
+			<td>grow / fold</td>
+			<td><button id="growFoldLine">start</button></td>
+			<td><button id="growFoldCircle">start</button></td>
+			<td style="border: 0px solid transparent;"></td>
+			<td><button id="growFoldRect">start</button></td>
+		</tr>
+		<tr>
+			<td>grow / moveTo</td>
+			<td></td>
+			<td><button id="growMoveCircle">start</button><button id="growMoveCircle2">start</button></td>
+			<td style="border: 0px solid transparent;"></td>
+			<td><button id="growMoveRect">start</button></td>
+		</tr>
+		<tr>
+			<td colspan="2">grow / moveTo / fold</td>
+			<td><button id="growMoveFoldCircle">start</button></td>
+			<td style="border: 0px solid transparent;"></td>
+			<td><button id="growMoveFoldRect">start</button></td>
+		</tr>
+	</table>
 </body>
 </html>

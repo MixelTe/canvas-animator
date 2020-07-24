@@ -2,7 +2,7 @@ import { CanvasAnimator } from "./canvasAnimator.js";
 import { setListeners } from "./exampleButtons.js";
 
 export const canvas = getCanvas("canvas");
-setCanvasWH();
+setCanvasWidth();
 const ctx = getCanvasContext(canvas);
 export const canvasAnimator = new CanvasAnimator(ctx, canvas.width, canvas.height);
 setListeners();
@@ -31,13 +31,9 @@ function getCanvasContext(canvas: HTMLCanvasElement)
 	if (ctx == null) throw new Error(`Context not found`);
 	return ctx;
 }
-function setCanvasWH()
+function setCanvasWidth()
 {
-	const w = window.innerWidth - 17;
-	const h = window.innerHeight - 42;
-
+	const w = getDiv("canvasDiv").getBoundingClientRect().width
 	canvas.style.width = `${w}`;
-	canvas.style.height = `${h}`;
 	canvas.width = w;
-	canvas.height = h;
 }
