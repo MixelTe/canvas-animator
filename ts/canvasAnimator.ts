@@ -69,13 +69,16 @@ export class CanvasAnimator
 		this.ctx.fillStyle = this.backgroundColor;
 		this.ctx.fillRect(this.x, this.y, this.width, this.height);
 		this.ctx.restore();
-		for (let i = this.animators.length - 1; i >= 0; i--) {
+		const toRemove: CanvasAnimator_Animator[] = [];
+		for (let i = 0; i < this.animators.length; i++)
+		{
 			const el = this.animators[i];
-			if (el.animate(this.ctx, this.startTime, time, interFrame))
-			{
-				this.animators.splice(i, 1);
-			};
+			if (el.animate(this.ctx, this.startTime, time, interFrame)) toRemove.push(el);
 		}
+		toRemove.forEach(el =>
+		{
+			this.animators.splice(this.animators.indexOf(el), 1);
+		})
 
 		requestAnimationFrame(this.redrawAll.bind(this));
 	}
