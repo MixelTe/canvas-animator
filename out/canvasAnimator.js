@@ -1,6 +1,7 @@
 import { CanvasAnimator_LineAnimator, CanvasAnimator_LineAnimationData_Grow, CanvasAnimator_LineAnimationData_Dash, CanvasAnimator_LineAnimationData_Draw, CanvasAnimator_LineAnimationData_MoveTo, CanvasAnimator_LineAnimationData_Fold } from "./objects/lineAnimations.js";
 import { CanvasAnimator_CircleAnimationData_Draw, CanvasAnimator_CircleAnimationData_Grow, CanvasAnimator_CircleAnimationData_Fold, CanvasAnimator_CircleAnimationData_Dash, CanvasAnimator_CircleAnimationData_MoveTo, CanvasAnimator_CircleAnimator } from "./objects/circleAnimations.js";
 import { CanvasAnimator_TextAnimationData_Draw, CanvasAnimator_TextAnimator, CanvasAnimator_TextAnimationData_Grow, CanvasAnimator_TextAnimationData_Fold, CanvasAnimator_TextAnimationData_MoveTo } from "./objects/textAnimations.js";
+import { CanvasAnimator_RectAnimationData_Draw, CanvasAnimator_RectAnimator, CanvasAnimator_RectAnimationData_Grow, CanvasAnimator_RectAnimationData_Dash, CanvasAnimator_RectAnimationData_MoveTo } from "./objects/rectAnimations.js";
 export class CanvasAnimator {
     constructor(ctx, drawZoneWidth, drawZoneHeight) {
         this.x = 0;
@@ -29,6 +30,18 @@ export class CanvasAnimator {
             fold: this.createTextAnimationFold,
             moveTo: this.createTextAnimationMoveTo,
         };
+        this.createRectAnimation = {
+            draw: this.createRectAnimationDraw,
+            growFullControls: this.createRectAnimationGrowFull,
+            growX: this.createRectAnimationGrowX,
+            growY: this.createRectAnimationGrowY,
+            growXY: this.createRectAnimationGrowXY,
+            foldX: this.createRectAnimationFoldX,
+            foldY: this.createRectAnimationFoldY,
+            foldXY: this.createRectAnimationFoldXY,
+            dash: this.createRectAnimationDash,
+            moveTo: this.createRectAnimationMoveTo,
+        };
         this.ctx = ctx;
         this.width = drawZoneWidth;
         this.height = drawZoneHeight;
@@ -46,35 +59,48 @@ export class CanvasAnimator {
         this.ctx.fillStyle = this.backgroundColor;
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
         this.ctx.restore();
-        for (let i = this.animators.length - 1; i >= 0; i--) {
+        const toRemove = [];
+        for (let i = 0; i < this.animators.length; i++) {
             const el = this.animators[i];
-            if (el.animate(this.ctx, this.startTime, time, interFrame)) {
-                this.animators.splice(i, 1);
-            }
-            ;
+            if (el.animate(this.ctx, this.startTime, time, interFrame))
+                toRemove.push(el);
         }
+        toRemove.forEach(el => {
+            this.animators.splice(this.animators.indexOf(el), 1);
+        });
         requestAnimationFrame(this.redrawAll.bind(this));
     }
-    drawLine(sx, sy, ex, ey, animation, styles) {
+    drawLine(sx, sy, ex, ey, countTimeFromNow, animation, styles) {
         if (animation == undefined || animation.length == 0)
             animation = [new CanvasAnimator_LineAnimationData_Draw(0)];
         if (styles == undefined)
             styles = () => { };
-        this.animators.push(new CanvasAnimator_LineAnimator(sx, sy, ex, ey, styles, animation));
+        countTimeFromNow = countTimeFromNow || false;
+        this.animators.push(new CanvasAnimator_LineAnimator(this.pastTime, countTimeFromNow, sx, sy, ex, ey, styles, animation));
     }
-    drawCircle(x, y, r, fill, animation, styles) {
+    drawCircle(x, y, r, fill, countTimeFromNow, animation, styles) {
         if (animation == undefined || animation.length == 0)
             animation = [new CanvasAnimator_CircleAnimationData_Draw(0)];
         if (styles == undefined)
             styles = () => { };
-        this.animators.push(new CanvasAnimator_CircleAnimator(x, y, r, fill, styles, animation));
+        countTimeFromNow = countTimeFromNow || false;
+        this.animators.push(new CanvasAnimator_CircleAnimator(this.pastTime, countTimeFromNow, x, y, r, fill, styles, animation));
     }
-    drawText(x, y, text, animation, styles) {
+    drawText(x, y, text, countTimeFromNow, animation, styles) {
         if (animation == undefined || animation.length == 0)
             animation = [new CanvasAnimator_TextAnimationData_Draw(0)];
         if (styles == undefined)
             styles = () => { };
-        this.animators.push(new CanvasAnimator_TextAnimator(x, y, text, styles, animation));
+        countTimeFromNow = countTimeFromNow || false;
+        this.animators.push(new CanvasAnimator_TextAnimator(this.pastTime, countTimeFromNow, x, y, text, styles, animation));
+    }
+    drawRect(x, y, width, height, countTimeFromNow, animation, styles) {
+        if (animation == undefined || animation.length == 0)
+            animation = [new CanvasAnimator_RectAnimationData_Draw(0)];
+        if (styles == undefined)
+            styles = () => { };
+        countTimeFromNow = countTimeFromNow || false;
+        this.animators.push(new CanvasAnimator_RectAnimator(this.pastTime, countTimeFromNow, x, y, width, height, styles, animation));
     }
     setBackgroundColor(color) {
         this.backgroundColor = color;
@@ -120,5 +146,35 @@ export class CanvasAnimator {
     }
     createTextAnimationMoveTo(startTime, duraction, x, y) {
         return new CanvasAnimator_TextAnimationData_MoveTo(startTime, duraction, x, y);
+    }
+    createRectAnimationDraw(startTime, duraction) {
+        return new CanvasAnimator_RectAnimationData_Draw(startTime, duraction);
+    }
+    createRectAnimationGrowFull(startTime, duraction, xAxis, toRight, reversX, yAxis, toTop, reversY) {
+        return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, xAxis, toRight, reversX, yAxis, toTop, reversY);
+    }
+    createRectAnimationGrowX(startTime, duraction, toRight) {
+        return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, false, false, false, false);
+    }
+    createRectAnimationGrowY(startTime, duraction, toTop) {
+        return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, false, false, false, true, toTop, false);
+    }
+    createRectAnimationGrowXY(startTime, duraction, toRight, toTop) {
+        return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, false, true, toTop, false);
+    }
+    createRectAnimationFoldX(startTime, duraction, toRight) {
+        return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, true, false, false, false);
+    }
+    createRectAnimationFoldY(startTime, duraction, toTop) {
+        return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, false, false, false, true, toTop, true);
+    }
+    createRectAnimationFoldXY(startTime, duraction, toRight, toTop) {
+        return new CanvasAnimator_RectAnimationData_Grow(startTime, duraction, true, toRight, true, true, toTop, true);
+    }
+    createRectAnimationDash(startTime, dashSpeed, dashArray, duration) {
+        return new CanvasAnimator_RectAnimationData_Dash(startTime, dashSpeed, dashArray, duration);
+    }
+    createRectAnimationMoveTo(startTime, duraction, x, y, width, height) {
+        return new CanvasAnimator_RectAnimationData_MoveTo(startTime, duraction, x, y, width, height);
     }
 }

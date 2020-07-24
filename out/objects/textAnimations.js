@@ -1,7 +1,7 @@
 import { CanvasAnimator_Animator, logEnd, logStart } from "./someBase.js";
 export class CanvasAnimator_TextAnimator extends CanvasAnimator_Animator {
-    constructor(x, y, text, setStyle, animations) {
-        super();
+    constructor(startTime, calcTimeFrElCr, x, y, text, setStyle, animations) {
+        super(startTime, calcTimeFrElCr);
         this.animations = animations;
         this.setStyle = setStyle;
         this.x = x;
@@ -14,12 +14,18 @@ export class CanvasAnimator_TextAnimator extends CanvasAnimator_Animator {
         if (this.curAnimation == undefined) {
             for (let i = 0; i < this.animations.length; i++) {
                 const el = this.animations[i];
-                if (el.startTime <= time - startTime) {
+                let elTime = el.startTime;
+                if (this.calculateTimeFromElementCreating)
+                    elTime += this.startTime;
+                if (elTime <= time - startTime) {
                     const animation = el.createAnimation(this.x, this.y, this.text);
                     this.curAnimation = animation;
                     this.animations.splice(i, 1);
                     this.curAnimation.redraw(ctx, interFrame);
-                    logStart(this.curAnimation.name, el.startTime, time, startTime);
+                    if (this.calculateTimeFromElementCreating)
+                        logStart(this.curAnimation.name, el.startTime, time, startTime, elTime);
+                    else
+                        logStart(this.curAnimation.name, elTime, time, startTime);
                     break;
                 }
                 ;
@@ -98,8 +104,8 @@ class CanvasAnimator_TextAnimation_Grow extends CanvasAnimator_TextAnimation {
             this.ry2 = this.y - textMetrics.actualBoundingBoxAscent;
             this.step = (this.rx2 - this.rx) / this.time;
             this.rwCur += this.step * time;
-            this.rwCur = this.normalizeCoordinates(this.rx, this.rwCur, this.rx2);
-            if (this.rwCur == this.rx2)
+            this.rwCur = this.normalizeCoordinates(this.rx - this.x, this.rwCur, this.rx2 - this.x);
+            if (this.rwCur == this.rx2 - this.x)
                 this.complited = true;
         }
         ctx.beginPath();
@@ -135,11 +141,11 @@ class CanvasAnimator_TextAnimation_Fold extends CanvasAnimator_TextAnimation {
             this.ry2 = this.y - textMetrics.actualBoundingBoxAscent;
             this.step = (this.rx2 - this.rx) / this.time;
             if (this.firstRedraw) {
-                this.rwCur = this.rx2;
+                this.rwCur = this.rx2 - this.x;
                 this.firstRedraw = false;
             }
             this.rwCur -= this.step * time;
-            this.rwCur = this.normalizeCoordinates(this.rx2, this.rwCur, 0);
+            this.rwCur = this.normalizeCoordinates(this.rx2 - this.x, this.rwCur, 0);
             if (this.rwCur == 0)
                 this.complited = true;
         }
